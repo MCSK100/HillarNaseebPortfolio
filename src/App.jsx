@@ -213,7 +213,7 @@ function App() {
               <motion.div className="photo-wrap" style={px({ y: photoY })}>
               <Tilt max={10}>
                 <div className="photo-frame tilt-pop-sm">
-                  <img src="/banner-img.jpeg" alt="Hillar Naseeb N — Digital Marketing and SEO Analyst" />
+                  <img src="/banner-img.jpeg" alt="Hillar Naseeb N — Digital Marketing and SEO Analyst" fetchPriority="high" decoding="async" />
                   <div className="photo-caption">
                     <div>
                       <strong>Hillar Naseeb N</strong>
@@ -251,7 +251,7 @@ function App() {
           <SectionHeading eyebrow="ABOUT ME" title="A marketer who thinks in pipelines, not just clicks." sub="Most marketers hand you traffic reports. I hand you leads — because I've carried a sales target too." />
           <div className="about-grid">
             <aside className="profile-card">
-              <img className="profile-photo" src="/banner-img.jpeg" alt="Hillar Naseeb N" />
+              <img className="profile-photo" src="/banner-img.jpeg" alt="Hillar Naseeb N" loading="lazy" decoding="async" />
               <h3>Hillar Naseeb N</h3>
               <span className="profile-role">Digital Marketing & SEO Analyst</span>
               <div className="profile-rows">
