@@ -310,7 +310,7 @@ function App() {
               <div className="profile-rows">
                 <div><Mail size={16} /> {contact.email}</div>
                 <div><Phone size={16} /> {contact.phone}</div>
-                <div><ExternalLink size={16} /> linkedin.com/in/hillar-naseeb</div>
+                <div><ExternalLink size={16} /> linkedin.com/in/hillar-naseeb-466621229</div>
               </div>
               <div className="stats-row">
                 {stats.map((s) => (
@@ -584,7 +584,7 @@ function App() {
               </a>
               <a className="contact-btn" href={contact.linkedin} target="_blank" rel="noreferrer">
                 <ExternalLink size={20} />
-                <span> linkedin.com/in/hillar-naseeb<small>Connect professionally</small></span>
+                <span> linkedin.com/in/hillar-naseeb-466621229<small>Connect professionally</small></span>
               </a>
             </div>
           </div>

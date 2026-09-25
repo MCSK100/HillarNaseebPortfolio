@@ -9,7 +9,7 @@ export const navigation = [
 ];
 
 export const socialLinks = [
-  { label: 'LinkedIn', url: 'https://linkedin.com/in/hillar-naseeb', icon: 'linkedin' },
+  { label: 'LinkedIn', url: 'https://www.linkedin.com/in/hillar-naseeb-466621229', icon: 'linkedin' },
   { label: 'Email', url: 'mailto:naseebmohd78@gmail.com', icon: 'mail' },
   { label: 'Phone', url: 'tel:+918778000970', icon: 'phone' },
 ];
@@ -97,7 +97,7 @@ export const projects = [
     outcome: 'Cleaner site health, resolved indexation issues and a keyword roadmap the team still executes against.',
     tech: ['SEMrush', 'Screaming Frog', 'GA4', 'Search Console', 'Keyword Research'],
     contactUrl: 'mailto:naseebmohd78@gmail.com',
-    profileUrl: 'https://linkedin.com/in/hillar-naseeb',
+    profileUrl: 'https://www.linkedin.com/in/hillar-naseeb-466621229',
     status: 'SEO CASE STUDY',
   },
   {
@@ -114,7 +114,7 @@ export const projects = [
     outcome: 'Stronger Maps visibility with profile insights — calls, direction requests and site clicks — tracked month over month.',
     tech: ['Google Business Profile', 'Google Maps', 'Keyword Planner', 'Canva', 'Local SEO'],
     contactUrl: 'mailto:naseebmohd78@gmail.com',
-    profileUrl: 'https://linkedin.com/in/hillar-naseeb',
+    profileUrl: 'https://www.linkedin.com/in/hillar-naseeb-466621229',
     status: 'LOCAL SEO CASE STUDY',
   },
 ];
@@ -173,5 +173,5 @@ export const contact = {
   email: 'naseebmohd78@gmail.com',
   phone: '+91 87780 00970',
   location: 'Coimbatore, Tamil Nadu',
-  linkedin: 'https://linkedin.com/in/hillar-naseeb',
+  linkedin: 'https://www.linkedin.com/in/hillar-naseeb-466621229',
 };
