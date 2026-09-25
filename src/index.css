@@ -72,7 +72,7 @@ a { color: inherit; text-decoration: none; }
 button { font: inherit; }
 img { max-width: 100%; display: block; }
 
-.container { width: min(1180px, calc(100% - 40px)); margin: 0 auto; }
+.container { width: 100%; max-width: 1180px; padding-left: 20px; padding-right: 20px; margin-left: auto; margin-right: auto; }
 .section { padding: 88px 0; position: relative; }
 
 /* ---------- scroll progress ---------- */
@@ -683,6 +683,7 @@ a.chip:hover { transform: translateY(-2px); border-color: var(--accent); box-sha
 .back-top:hover { opacity: 1; color: var(--accent); }
 .copyright {
   border-top: 1px solid color-mix(in srgb, var(--paper) 15%, transparent);
+  width: 100%;
   padding: 1.2rem 0 max(1.6rem, env(safe-area-inset-bottom));
   display: flex; align-items: center; gap: 0.7rem; flex-wrap: wrap;
   font-size: 0.8rem; opacity: 0.75;
@@ -701,9 +702,13 @@ a.chip:hover { transform: translateY(-2px); border-color: var(--accent); box-sha
   .contact-card { grid-template-columns: 1fr; }
 }
 @media (max-width: 680px) {
-  .section { padding: 68px 0; }
+  .section { padding: 72px 0; }
+  .container { padding-left: 16px; padding-right: 16px; }
   .hero { padding: 44px 0 60px; }
-  .hero-text { font-size: 1rem; }
+  .hero-grid { grid-template-columns: minmax(0, 1fr); gap: 36px; }
+  .hero-grid > * { min-width: 0; max-width: 100%; }
+  .photo-wrap, .tilt-stage, .photo-frame { max-width: 100%; }
+  .hero-text { font-size: 1rem; max-width: 100%; }
   .nav-links {
     position: fixed; inset: 76px 16px auto 16px;
     background: color-mix(in srgb, var(--card) 88%, transparent);
