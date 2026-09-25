@@ -551,7 +551,7 @@ function App() {
           <div className="process-grid">
             {process.map(({ title, description }, i) => (
               <motion.div
-                key={step}
+                key={title}
                 className="process-step"
                 initial={{ opacity: 0, y: 34, rotateX: 10 }}
                 whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
