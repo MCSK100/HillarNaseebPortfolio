@@ -253,7 +253,7 @@ function App() {
 
       <main>
         {/* HERO */}
-        <section id="home" className="hero container" ref={heroRef}>
+        <section id="home" className="hero" ref={heroRef}>
           <motion.div className="orb orb--one" style={px({ y: orbY })} aria-hidden="true" />
           <motion.div className="orb orb--two" style={px({ y: orbY })} aria-hidden="true" />
           <div className="hero-bg" aria-hidden="true">
@@ -276,6 +276,20 @@ function App() {
               </span>
             ))}
           </div>
+          <svg className="hero-line" viewBox="0 0 1440 320" preserveAspectRatio="none" aria-hidden="true">
+            <path
+              className="line-ghost"
+              pathLength="100"
+              d="M0,280 C120,272 180,248 260,252 S420,214 500,220 S660,182 740,188 S900,142 980,148 S1140,104 1220,110 S1360,66 1440,60"
+            />
+            <path
+              className="line-main"
+              pathLength="100"
+              d="M0,262 C120,252 180,224 260,228 S420,190 500,196 S660,152 740,158 S900,112 980,118 S1140,72 1220,78 S1360,36 1440,30"
+            />
+            <circle className="line-dot" cx="1440" cy="30" r="7" />
+          </svg>
+          <div className="container">
           <div className="hero-grid">
             <motion.div initial={{ opacity: 0, y: 26 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, ease: 'easeOut' }}>
               <motion.div style={px({ y: copyY, opacity: copyOpacity })}>
@@ -351,6 +365,7 @@ function App() {
                 ))}
               </div>
             </motion.div>
+          </div>
           </div>
         </section>
 
