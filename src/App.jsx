@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { motion, useInView, useMotionValue, useReducedMotion, useScroll, useSpring, useTransform, useVelocity } from 'framer-motion';
+import { motion, useMotionValue, useReducedMotion, useScroll, useSpring, useTransform, useVelocity } from 'framer-motion';
 import Lenis from 'lenis';
 import {
   ArrowUp, ArrowUpRight, Award, BarChart3, CheckCircle, ExternalLink, GraduationCap,
@@ -80,40 +80,6 @@ function Tilt({ children, max = 10 }) {
       </motion.div>
     </div>
   );
-}
-
-/* Animated counter — counts up when scrolled into view.
-   Handles suffixes ("15+") and zero-padded values ("04"). */
-function CountUp({ value, duration = 1.6 }) {
-  const reduce = useReducedMotion();
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: '-40px' });
-  const str = String(value);
-  const m = str.match(/(\d+)/);
-  const target = m ? parseInt(m[1], 10) : 0;
-  const pad = m && m[1].length > 1 && m[1].startsWith('0') ? m[1].length : 0;
-  const suffix = m ? str.slice(m.index + m[1].length) : '';
-  const finalText = m ? String(target).padStart(pad, '0') + suffix : str;
-  const [display, setDisplay] = useState(reduce ? finalText : `0${suffix}`);
-
-  useEffect(() => {
-    if (!inView || reduce) {
-      if (inView) setDisplay(finalText);
-      return undefined;
-    }
-    let raf;
-    const start = performance.now();
-    const tick = (now) => {
-      const p = Math.min(1, (now - start) / (duration * 1000));
-      const eased = p === 1 ? 1 : 1 - Math.pow(2, -10 * p);
-      setDisplay(String(Math.round(target * eased)).padStart(pad, '0') + suffix);
-      if (p < 1) raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, [inView, reduce, target, pad, suffix, finalText, duration]);
-
-  return <span ref={ref}>{display}</span>;
 }
 
 function App() {
@@ -298,7 +264,7 @@ function App() {
               <div className="hero-proof">
                 {stats.map((s) => (
                   <div key={s.label} className="proof-item">
-                    <strong><CountUp value={s.value} /></strong>
+                    <strong>{s.value}</strong>
                     <span>{s.label}</span>
                   </div>
                 ))}
@@ -384,7 +350,7 @@ function App() {
               </div>
               <div className="stats-row">
                 {stats.map((s) => (
-                  <div key={s.label} className="stat"><strong><CountUp value={s.value} /></strong><span>{s.label}</span></div>
+                  <div key={s.label} className="stat"><strong>{s.value}</strong><span>{s.label}</span></div>
                 ))}
               </div>
             </aside>
@@ -432,7 +398,7 @@ function App() {
               { v: '09', l: 'Core specialties' },
             ].map(({ v, l }) => (
               <div key={l} className="number-cell">
-                <strong><CountUp value={v} duration={1.8} /></strong>
+                <strong>{v}</strong>
                 <span>{l}</span>
               </div>
             ))}
