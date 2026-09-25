@@ -241,7 +241,6 @@ function App() {
           <div className="hero-grid">
             <motion.div initial={{ opacity: 0, y: 26 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, ease: 'easeOut' }}>
               <motion.div style={px({ y: copyY, opacity: copyOpacity })}>
-              <span className="badge"><span className="badge-dot" /> VOL. 01 · COVER STORY · COIMBATORE</span>
               <h1 className="hero-title">
                 I turn searches into traffic, and <em className="serif-accent">traffic into revenue.</em>
               </h1>
