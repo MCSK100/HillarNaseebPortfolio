@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion, useMotionValue, useReducedMotion, useScroll, useSpring, useTransform } from 'framer-motion';
 import {
-  ArrowUpRight, Award, BarChart3, CheckCircle, ExternalLink, GraduationCap,
-  Mail, MapPin, Megaphone, Phone, Search,
+  ArrowUp, ArrowUpRight, Award, BarChart3, CheckCircle, ExternalLink, GraduationCap,
+  Mail, MapPin, Megaphone, Moon, Phone, Search, Sun,
   Target, TrendingUp, Globe,
 } from 'lucide-react';
 import {
@@ -25,10 +25,12 @@ const skillIconComponents = [Search, BarChart3, Megaphone, Target];
 
 const toolStrip = ['SEMrush', 'Ahrefs', 'Moz Pro', 'GA4', 'Search Console', 'Google Ads', 'Meta Ads', 'Screaming Frog', 'WordPress', 'HubSpot', 'Tag Manager', 'Ubersuggest'];
 
-/* Tamil-numeral chapter markers — the issue's running order, in Hillar's own script. */
-const CHAPTER_NOS = { '#home': '௦', '#about': '௧', '#skills': '௨', '#experience': '௩', '#projects': '௪', '#contact': '௭' };
+/* Issue running order — zero-padded chapters, print-magazine style. */
+const CHAPTER_NOS = { '#home': '00', '#about': '01', '#skills': '02', '#experience': '03', '#projects': '04', '#services': '05', '#contact': '06' };
 
 const tickerItems = ['SEO AUDITS', 'META ADS', 'KEYWORD RESEARCH', 'GA4 ANALYTICS', 'LEAD GENERATION', 'LOCAL SEO', 'TECHNICAL FIXES', 'CONTENT THAT RANKS'];
+
+const ROMAN = ['I', 'II', 'III', 'IV', 'V', 'VI'];
 
 function SectionHeading({ eyebrow, tone = '', title, sub, align = 'left', no }) {
   return (
@@ -91,6 +93,15 @@ function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [headerHidden, setHeaderHidden] = useState(false);
   const reduceMotion = useReducedMotion();
+  const [theme, setTheme] = useState(() => {
+    if (typeof window === 'undefined') return 'day';
+    return window.localStorage.getItem('hn-theme') || 'day';
+  });
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme;
+    window.localStorage.setItem('hn-theme', theme);
+  }, [theme]);
 
   /* page scroll progress bar */
   const { scrollYProgress } = useScroll();
@@ -145,9 +156,9 @@ function App() {
       <motion.div className="progress-bar" style={{ scaleX: pageProgress }} aria-hidden="true" />
       <div className="grain" aria-hidden="true" />
       <div className="top-strip masthead">
-        <span className="ms-side">VOL. 01 · 2026</span>
-        <span className="masthead-title">THE GROWTH ISSUE — available for roles & freelance</span>
-        <span className="ms-side">CBE · 11.02° N</span>
+        <span className="ms-side">VOL. 01 · &apos;26</span>
+        <span className="masthead-title">THE GROWTH ISSUE</span>
+        <span className="ms-side">CBE · 11.02° N, 76.96° E</span>
       </div>
 
       <header className={`site-header ${scrolled ? 'site-header--scrolled' : ''} ${headerHidden ? 'site-header--hidden' : ''}`}>
@@ -170,6 +181,15 @@ function App() {
             ))}
           </div>
           <div className="nav-actions">
+            <button
+              type="button"
+              className="theme-toggle"
+              aria-label="Toggle day and night mode"
+              onClick={() => setTheme((t) => (t === 'day' ? 'night' : 'day'))}
+            >
+              {theme === 'day' ? <Moon size={15} /> : <Sun size={15} />}
+              <span className="theme-label">{theme === 'day' ? 'Night' : 'Day'}</span>
+            </button>
             <a href="#contact" className="nav-cta">Let&apos;s Talk <ArrowUpRight size={15} /></a>
             <button type="button" className="menu-toggle" aria-label="Toggle navigation menu" aria-expanded={menuOpen} onClick={() => setMenuOpen((o) => !o)}>
               <span /><span />
@@ -186,7 +206,7 @@ function App() {
           <div className="hero-grid">
             <motion.div initial={{ opacity: 0, y: 26 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, ease: 'easeOut' }}>
               <motion.div style={px({ y: copyY, opacity: copyOpacity })}>
-              <span className="badge"><span className="badge-dot" /> COVER STORY · SEO ANALYST, COIMBATORE</span>
+              <span className="badge"><span className="badge-dot" /> VOL. 01 · COVER STORY · COIMBATORE</span>
               <h1 className="hero-title">
                 I turn searches into traffic, and <em className="serif-accent">traffic into revenue.</em>
               </h1>
@@ -206,6 +226,7 @@ function App() {
                 <span>FIELD · SEO + META ADS</span>
                 <span>BASE · COIMBATORE</span>
               </div>
+              <p className="proof-label">SELECTED PROOF — PRODUCTION SCALE</p>
               <div className="hero-proof">
                 {stats.map((s) => (
                   <div key={s.label} className="proof-item">
@@ -253,7 +274,7 @@ function App() {
           <div className="ticker" aria-hidden="true">
             <div className="ticker-track">
               {[...tickerItems, ...tickerItems].map((t, i) => (
-                <span key={i}>{t}<i>✦</i></span>
+                <span key={i}>{t}<i>◆</i></span>
               ))}
             </div>
           </div>
@@ -272,16 +293,23 @@ function App() {
 
         {/* ABOUT */}
         <section id="about" className="section container">
-          <SectionHeading no="௧" eyebrow="CHAPTER ONE · ABOUT ME" title="A marketer who thinks in pipelines, not just clicks." sub="Most marketers hand you traffic reports. I hand you leads — because I've carried a sales target too." />
+          <SectionHeading no="01" eyebrow="BACKGROUND & WORKING STYLE" title="A marketer who thinks in pipelines, not just clicks." sub="Most marketers hand you traffic reports. I hand you leads — because I've carried a sales target too." />
           <div className="about-grid">
             <aside className="profile-card">
               <img className="profile-photo" src="/banner-img.jpeg" alt="Hillar Naseeb N" loading="lazy" decoding="async" />
               <h3>Hillar Naseeb N</h3>
               <span className="profile-role">Digital Marketing & SEO Analyst</span>
+              <p className="vitals-label">VITALS · VOL. 01</p>
+              <div className="profile-rows">
+                <div><MapPin size={16} /><span>Currently<small>SEO Analyst · TN Industrial Connect</small></span></div>
+                <div><TrendingUp size={16} /><span>Previously<small>Assistant Team Manager · Inmakes Infotech</small></span></div>
+                <div><Globe size={16} /><span>Based in<small>Coimbatore, TN · 11.02° N, 76.96° E</small></span></div>
+                <div><CheckCircle size={16} /><span>Open to<small>SEO & growth roles · freelance audits</small></span></div>
+              </div>
+              <p className="vitals-label">CORRESPONDENCE</p>
               <div className="profile-rows">
                 <div><Mail size={16} /> {contact.email}</div>
                 <div><Phone size={16} /> {contact.phone}</div>
-                <div><MapPin size={16} /> {contact.location}</div>
                 <div><ExternalLink size={16} /> linkedin.com/in/hillar-naseeb</div>
               </div>
               <div className="stats-row">
@@ -312,6 +340,20 @@ function App() {
               </div>
             </div>
           </div>
+          <div className="years" aria-label="Through the years">
+            <p className="years-title">THROUGH THE YEARS</p>
+            {[
+              { y: "'22", t: 'Online Tutor', s: 'Focus Edumatics · Remote' },
+              { y: "'23", t: 'Business Development Executive', s: 'Inmakes Infotech · Kochi' },
+              { y: "'25", t: 'Assistant Team Manager', s: 'Inmakes Infotech · Kochi' },
+              { y: "'26", t: 'Digital Marketing & SEO Analyst', s: 'TN Industrial Connect' },
+            ].map(({ y, t, s }) => (
+              <div key={y} className="year-item">
+                <b>{y}</b>
+                <div><strong>{t}</strong><br /><span>{s}</span></div>
+              </div>
+            ))}
+          </div>
           <div className="numbers-band" aria-label="By the numbers">
             {[
               { v: '3+', l: 'Years in the craft' },
@@ -329,7 +371,7 @@ function App() {
 
         {/* SKILLS */}
         <section id="skills" className="section container" style={{ paddingTop: 0 }}>
-          <SectionHeading no="௨" align="center" eyebrow="CHAPTER TWO · TOOLKIT" tone="violet" title="The stack under the hood." sub="Rated by daily use — five stars means it's in my hands every single day." />
+          <SectionHeading no="02" align="center" eyebrow="TOOLKIT APPENDIX" tone="violet" title="The stack under the hood." sub="Rated by daily use — five stars means it's in my hands every single day." />
           <div className="skills-grid">
             {skillGroups.map((group, i) => {
               const Icon = skillIconComponents[i % skillIconComponents.length];
@@ -359,7 +401,7 @@ function App() {
 
         {/* EXPERIENCE */}
         <section id="experience" className="section container" style={{ paddingTop: 0 }}>
-          <SectionHeading no="௩" eyebrow="CHAPTER THREE · TRACK RECORD" title="3+ years across SEO, ads, sales & leadership." sub="Every role below fed the next — outreach, then pipeline ownership, then growth strategy." />
+          <SectionHeading no="03" eyebrow="TRACK RECORD" title="3+ years across SEO, ads, sales & leadership." sub="Every role below fed the next — outreach, then pipeline ownership, then growth strategy." />
           <div className="timeline">
             {experience.map((item, idx) => (
               <motion.article
@@ -373,7 +415,7 @@ function App() {
                 <div className="timeline-head">
                   <div>
                     <span className="company">{item.company}</span>
-                    <h3>{item.role}</h3>
+                    <h3><span className="roman" aria-hidden="true">{ROMAN[idx]}</span>{item.role}</h3>
                   </div>
                   <span className={`period ${idx === 0 ? 'live' : ''}`}>{item.period}</span>
                 </div>
@@ -391,7 +433,16 @@ function App() {
 
         {/* PROJECTS */}
         <section id="projects" className="section container" style={{ paddingTop: 0 }}>
-          <SectionHeading no="௪" eyebrow="CHAPTER FOUR · THE PLATES" tone="amber" title="Two plates, fully documented." sub="Each plate shows the full engagement — scope, deliverables, outcome. Ask me for the walkthrough." />
+          <SectionHeading no="04" eyebrow="BUILD LOG · THE PLATES" tone="amber" title="Two plates, fully documented." sub="Each plate shows the full engagement — scope, deliverables, outcome. Ask me for the walkthrough." />
+          <div className="contents-list" aria-label="In this issue">
+            {projects.map((project, i) => (
+              <a key={project.title} href={`mailto:${contact.email}?subject=Case study: ${project.title}`}>
+                <span className="c-no">B.0{i + 1}</span>
+                {project.title}
+                <span className="c-sub">{project.status} →</span>
+              </a>
+            ))}
+          </div>
           <div className="project-grid">
             {projects.map((project, i) => (
               <motion.article
@@ -402,14 +453,18 @@ function App() {
                 viewport={{ once: true, margin: '-60px' }}
                 transition={{ duration: 0.5, delay: i * 0.08 }}
               >
-                <div className={`project-banner ${i % 2 ? 'project-banner--violet' : 'project-banner--emerald'}`}>
-                  <span className="project-status">{project.status}</span>
+                <div className={`project-banner ${i % 2 ? 'project-banner--ink' : 'project-banner--ember'}`}>
+                  <span className="project-status">B.0{i + 1} · {project.status}</span>
                   <div className="big">Plate {project.number}</div>
                   <span className="plate-words">{project.title}</span>
                 </div>
                 <div className="project-body">
+                  <div className="plate-meta">
+                    <span>ROLE <b>Solo build</b></span>
+                    <span>STATUS <b>{project.status}</b></span>
+                  </div>
                   <h3>{project.title}</h3>
-                  <p>{project.description}</p>
+                  <blockquote className="plate-quote">“{project.description}”</blockquote>
                   <ul className="deliver-list">
                     {project.deliverables.map((d) => (
                       <li key={d}><CheckCircle size={15} /> {d}</li>
@@ -431,6 +486,7 @@ function App() {
 
         {/* FOCUS */}
         <section className="container" style={{ paddingBottom: 8 }}>
+          <p className="currently-label">→ CURRENTLY</p>
           <div className="focus-grid">
             {currentProjects.map(({ name, status }) => (
               <div key={name} className="focus-item">
@@ -442,8 +498,8 @@ function App() {
         </section>
 
         {/* SERVICES */}
-        <section className="section container">
-          <SectionHeading align="center" eyebrow="SERVICES" tone="violet" title="Hire me for outcomes, not activities." sub="Every service ends in something you can measure — rankings, leads or cost-per-result." />
+        <section id="services" className="section container">
+          <SectionHeading no="05" align="center" eyebrow="SERVICES" tone="violet" title="Hire me for outcomes, not activities." sub="Every service ends in something you can measure — rankings, leads or cost-per-result." />
           <div className="services-grid">
             {services.map(({ title, description, icon }, i) => {
               const Icon = serviceIcons[icon] || Search;
@@ -456,12 +512,8 @@ function App() {
               );
             })}
           </div>
-        </section>
-
-        {/* PROCESS */}
-        <section className="section container" style={{ paddingTop: 0 }}>
-          <div className="band-dark">
-          <SectionHeading no="௫" eyebrow="CHAPTER FIVE · METHOD" title="A simple process. No black box." sub="You'll always know what's happening, why it matters, and what comes next." />
+          <div className="band-dark" style={{ marginTop: '2.5rem' }}>
+          <SectionHeading eyebrow="METHOD · HOW I WORK" title="A simple process. No black box." sub="You'll always know what's happening, why it matters, and what comes next." />
           <div className="process-grid">
             {process.map(({ step, title, description }, i) => (
               <motion.div
@@ -483,7 +535,7 @@ function App() {
 
         {/* CREDENTIALS */}
         <section className="section container" style={{ paddingTop: 0 }}>
-          <SectionHeading no="௬" eyebrow="CHAPTER SIX · APPENDIX" tone="amber" title="Certified skills, solid foundation." sub="Google and HubSpot certified — plus the maths degree that makes analytics click." />
+          <SectionHeading eyebrow="APPENDIX · CREDENTIALS" tone="amber" title="Certified skills, solid foundation." sub="Google and HubSpot certified — plus the maths degree that makes analytics click." />
           <div className="cred-grid">
             {certifications.map(({ title, issuer }) => (
               <div key={title} className="cred-card">
@@ -511,14 +563,15 @@ function App() {
         <section id="contact" className="section container" style={{ paddingTop: 0 }}>
           <div className="contact-card">
             <div>
-              <span className="chapter-no light" aria-hidden="true">௭</span>
-              <span className="eyebrow-pill">BACK COVER · LET&apos;S WORK TOGETHER</span>
-              <h2>Need more traffic? Let&apos;s grow it.</h2>
+              <span className="chapter-no light" aria-hidden="true">06</span>
+              <span className="eyebrow-pill">SIGNAL · BACK COVER</span>
+              <h2>Let&apos;s build something good.</h2>
               <p className="contact-copy">
-                Hiring for a <strong>Digital Marketing & SEO Analyst</strong> role, or need a freelancer for
-                SEO / Meta Ads? Send me your website or ad account — I&apos;ll reply within 24 hours with
-                honest first impressions, free. Based in {contact.location}, working worldwide.
+                Open to SEO and growth roles where <strong>craft and ownership</strong> matter — plus
+                freelance SEO / Meta Ads engagements. Send me your website or ad account and I&apos;ll
+                reply with honest first impressions, free. Based in {contact.location}, working worldwide.
               </p>
+              <p className="signal-note">REPLY WITHIN 24 HOURS · COIMBATORE · REMOTE-FIRST</p>
             </div>
             <div className="contact-actions">
               <a className="contact-btn primary" href={`mailto:${contact.email}`}>
@@ -549,12 +602,13 @@ function App() {
               {socialLinks.map(({ label, url }) => (
                 <a key={label} href={url} target="_blank" rel="noreferrer">{label}</a>
               ))}
+              <a className="back-top" href="#home">Back to top <ArrowUp size={13} /></a>
             </div>
           </div>
           <div className="copyright">
             <span className="copyright-dot" />
             <span>© 2026 {contact.name} — The Growth Issue, Vol. 01.</span>
-            <span className="colophon">Set in Plus Jakarta Sans & Fraunces · Printed on the web · CBE 11.02° N</span>
+            <span className="colophon">Set in Fraunces, Jakarta & Plex Mono · Printed on the web · CBE 11.02° N, 76.96° E</span>
           </div>
         </div>
       </footer>

@@ -1,10 +1,11 @@
 export const navigation = [
-  { name: 'Home', href: '#home' },
-  { name: 'About', href: '#about' },
-  { name: 'Skills', href: '#skills' },
-  { name: 'Experience', href: '#experience' },
-  { name: 'Projects', href: '#projects' },
-  { name: 'Contact', href: '#contact' },
+  { name: 'Intro', href: '#home' },
+  { name: 'Background', href: '#about' },
+  { name: 'Toolkit', href: '#skills' },
+  { name: 'Track Record', href: '#experience' },
+  { name: 'Plates', href: '#projects' },
+  { name: 'Services', href: '#services' },
+  { name: 'Signal', href: '#contact' },
 ];
 
 export const socialLinks = [
