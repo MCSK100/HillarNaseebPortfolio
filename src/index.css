@@ -617,6 +617,69 @@ a.chip:hover { transform: translateY(-2px); border-color: var(--accent); box-sha
 .copyright-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
 .colophon { margin-left: auto; font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.04em; }
 
+/* ---------- site-wide iPhone glass ---------- */
+.profile-card, .highlight, .skill-card, .service-card, .cred-card, .stat {
+  background: color-mix(in srgb, var(--card) 62%, transparent);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid color-mix(in srgb, #ffffff 55%, var(--line));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), var(--shadow-sm);
+}
+.skill-card.featured {
+  background: color-mix(in srgb, var(--ink) 78%, transparent);
+  border-color: color-mix(in srgb, #ffffff 22%, transparent);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), var(--shadow);
+}
+.focus-item {
+  background: color-mix(in srgb, var(--card) 62%, transparent);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid color-mix(in srgb, #ffffff 55%, var(--line));
+  border-radius: 14px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), var(--shadow-sm);
+}
+.timeline { gap: 16px; }
+.timeline-card {
+  background: color-mix(in srgb, var(--card) 62%, transparent);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid color-mix(in srgb, #ffffff 55%, var(--line));
+  border-radius: 18px;
+  padding: 1.5rem 1.6rem;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), var(--shadow-sm);
+}
+.project-card {
+  background: color-mix(in srgb, var(--card) 68%, transparent);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid color-mix(in srgb, #ffffff 55%, var(--line));
+  border-radius: 20px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), var(--shadow);
+}
+.project-card:hover {
+  transform: translateY(-6px);
+  border-color: color-mix(in srgb, var(--accent) 55%, var(--line));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 30px 70px rgba(28, 24, 20, 0.18);
+}
+.process-step {
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  backdrop-filter: blur(16px) saturate(160%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+.tag-cloud span, .tech-tags span, .project-tech span {
+  background: color-mix(in srgb, var(--card) 55%, transparent);
+  -webkit-backdrop-filter: blur(10px) saturate(160%);
+  backdrop-filter: blur(10px) saturate(160%);
+}
+/* lighter blur on phones to protect frame rate */
+@media (max-width: 680px) {
+  .profile-card, .highlight, .skill-card, .service-card, .cred-card, .stat,
+  .focus-item, .timeline-card, .project-card {
+    -webkit-backdrop-filter: blur(12px) saturate(160%);
+    backdrop-filter: blur(12px) saturate(160%);
+  }
+}
+
 /* ---------- responsive ---------- */
 @media (max-width: 1020px) {
   .hero-grid { grid-template-columns: 1fr; }
