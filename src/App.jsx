@@ -219,7 +219,7 @@ function App() {
         <nav className="nav container" aria-label="Main navigation">
           <a href="#home" className="brand" aria-label="Hillar home">
             <span className="brand-mark">HN</span>
-            <span>HILLAR NASEEB<small>SEO • META ADS</small></span>
+            <span className="brand-text">HILLAR NASEEB<small>DIGITAL MARKETING & SEO ANALYST</small></span>
           </a>
           <div className={`nav-links ${menuOpen ? 'nav-links--open' : ''}`}>
             {navigation.map((item) => (
