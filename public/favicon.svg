@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Santhosh Kumar logo">
+  <rect width="64" height="64" rx="16" fill="#0f1115"/>
+  <path d="M16 48V18h9.5c8.8 0 13.2 4.2 13.2 10.5 0 6.9-5.6 10.9-14.3 10.9H25V48h-9zm9-14.2h2.7c4.4 0 7.1-1.9 7.1-5.4 0-3.7-2.8-5.5-7.4-5.5H25v10.9zm18 14.2V18h9v30h-9z" fill="#f5f1ea"/>
+  <rect x="14" y="14" width="36" height="36" rx="10" stroke="#d64646" stroke-width="2" fill="none" opacity="0.9"/>
+</svg>
