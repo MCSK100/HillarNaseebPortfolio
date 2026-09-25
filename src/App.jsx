@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import { motion, useMotionValue, useReducedMotion, useScroll, useSpring, useTransform } from 'framer-motion';
+import { motion, useMotionValue, useReducedMotion, useScroll, useSpring, useTransform, useVelocity } from 'framer-motion';
+import Lenis from 'lenis';
 import {
   ArrowUp, ArrowUpRight, Award, BarChart3, CheckCircle, ExternalLink, GraduationCap,
   Mail, MapPin, Megaphone, Moon, Phone, Search, Sun,
@@ -25,14 +26,9 @@ const skillIconComponents = [Search, BarChart3, Megaphone, Target];
 
 const toolStrip = ['SEMrush', 'Ahrefs', 'Moz Pro', 'GA4', 'Search Console', 'Google Ads', 'Meta Ads', 'Screaming Frog', 'WordPress', 'HubSpot', 'Tag Manager', 'Ubersuggest'];
 
-/* Issue running order — zero-padded chapters, print-magazine style. */
-const CHAPTER_NOS = { '#home': '00', '#about': '01', '#skills': '02', '#experience': '03', '#projects': '04', '#services': '05', '#contact': '06' };
-
 const tickerItems = ['SEO AUDITS', 'META ADS', 'KEYWORD RESEARCH', 'GA4 ANALYTICS', 'LEAD GENERATION', 'LOCAL SEO', 'TECHNICAL FIXES', 'CONTENT THAT RANKS'];
 
-const ROMAN = ['I', 'II', 'III', 'IV', 'V', 'VI'];
-
-function SectionHeading({ eyebrow, tone = '', title, sub, align = 'left', no }) {
+function SectionHeading({ eyebrow, tone = '', title, sub, align = 'left' }) {
   return (
     <motion.div
       className={`section-heading ${align === 'center' ? 'section-heading--center' : ''}`}
@@ -41,7 +37,6 @@ function SectionHeading({ eyebrow, tone = '', title, sub, align = 'left', no }) 
       viewport={{ once: true, margin: '-60px' }}
       transition={{ duration: 0.55, ease: 'easeOut' }}
     >
-      {no ? <span className="chapter-no" aria-hidden="true">{no}</span> : null}
       <span className={`eyebrow-pill ${tone}`}>{eyebrow}</span>
       <h2>{title}</h2>
       {sub ? <p className="sub">{sub}</p> : null}
@@ -121,6 +116,51 @@ function App() {
   const orbY = useTransform(heroProgress, [0, 1], [0, 160]);
   const px = (value) => (reduceMotion ? undefined : value);
 
+  /* scroll velocity → ticker skew (Unread-studio style kinetic feedback) */
+  const { scrollY } = useScroll();
+  const scrollVel = useVelocity(scrollY);
+  const smoothVel = useSpring(scrollVel, { damping: 50, stiffness: 400 });
+  const tickerSkew = useTransform(smoothVel, [-3000, 3000], [-5, 5]);
+
+  /* Lenis inertia smooth scroll — the award-site scroll feel.
+     Skipped for reduced-motion (native smooth scroll instead). */
+  const lenisRef = useRef(null);
+  useEffect(() => {
+    if (reduceMotion) {
+      document.documentElement.style.scrollBehavior = 'smooth';
+      return undefined;
+    }
+    const lenis = new Lenis({ lerp: 0.09, wheelMultiplier: 1, touchMultiplier: 1.4 });
+    lenisRef.current = lenis;
+    let raf = requestAnimationFrame(function loop(time) {
+      lenis.raf(time);
+      raf = requestAnimationFrame(loop);
+    });
+    return () => {
+      cancelAnimationFrame(raf);
+      lenis.destroy();
+      lenisRef.current = null;
+    };
+  }, [reduceMotion]);
+
+  /* route every in-page anchor through Lenis with header offset */
+  useEffect(() => {
+    const handleAnchor = (e) => {
+      const a = e.target.closest('a[href^="#"]');
+      if (!a) return;
+      const hash = a.getAttribute('href');
+      if (!hash || hash.length < 2) return;
+      const el = document.querySelector(hash);
+      const lenis = lenisRef.current;
+      if (!el || !lenis) return;
+      e.preventDefault();
+      setMenuOpen(false);
+      lenis.scrollTo(el, { offset: -84, duration: 1.4 });
+    };
+    document.addEventListener('click', handleAnchor);
+    return () => document.removeEventListener('click', handleAnchor);
+  }, []);
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -149,18 +189,14 @@ function App() {
 
   useEffect(() => {
     document.body.classList.toggle('menu-open', menuOpen);
+    if (menuOpen) lenisRef.current?.stop();
+    else lenisRef.current?.start();
   }, [menuOpen]);
 
   return (
     <div className="app-shell">
       <motion.div className="progress-bar" style={{ scaleX: pageProgress }} aria-hidden="true" />
       <div className="grain" aria-hidden="true" />
-      <div className="top-strip masthead">
-        <span className="ms-side">VOL. 01 · &apos;26</span>
-        <span className="masthead-title">THE GROWTH ISSUE</span>
-        <span className="ms-side">CBE · 11.02° N, 76.96° E</span>
-      </div>
-
       <header className={`site-header ${scrolled ? 'site-header--scrolled' : ''} ${headerHidden ? 'site-header--hidden' : ''}`}>
         <nav className="nav container" aria-label="Main navigation">
           <a href="#home" className="brand" aria-label="Hillar home">
@@ -175,7 +211,6 @@ function App() {
                 className={activeSection === item.href.replace('#', '') ? 'active' : ''}
                 onClick={() => setMenuOpen(false)}
               >
-                <span className="nav-no" aria-hidden="true">{CHAPTER_NOS[item.href]}</span>
                 {item.name}
               </a>
             ))}
@@ -272,11 +307,13 @@ function App() {
             </motion.div>
           </div>
           <div className="ticker" aria-hidden="true">
-            <div className="ticker-track">
-              {[...tickerItems, ...tickerItems].map((t, i) => (
-                <span key={i}>{t}<i>◆</i></span>
-              ))}
-            </div>
+            <motion.div style={px({ skewX: tickerSkew })}>
+              <div className="ticker-track">
+                {[...tickerItems, ...tickerItems].map((t, i) => (
+                  <span key={i}>{t}<i>◆</i></span>
+                ))}
+              </div>
+            </motion.div>
           </div>
         </section>
 
@@ -293,7 +330,7 @@ function App() {
 
         {/* ABOUT */}
         <section id="about" className="section container">
-          <SectionHeading no="01" eyebrow="BACKGROUND & WORKING STYLE" title="A marketer who thinks in pipelines, not just clicks." sub="Most marketers hand you traffic reports. I hand you leads — because I've carried a sales target too." />
+          <SectionHeading eyebrow="BACKGROUND & WORKING STYLE" title="A marketer who thinks in pipelines, not just clicks." sub="Most marketers hand you traffic reports. I hand you leads — because I've carried a sales target too." />
           <div className="about-grid">
             <aside className="profile-card">
               <img className="profile-photo" src="/banner-img.jpeg" alt="Hillar Naseeb N" loading="lazy" decoding="async" />
@@ -371,7 +408,7 @@ function App() {
 
         {/* SKILLS */}
         <section id="skills" className="section container" style={{ paddingTop: 0 }}>
-          <SectionHeading no="02" align="center" eyebrow="TOOLKIT APPENDIX" tone="violet" title="The stack under the hood." sub="Rated by daily use — five stars means it's in my hands every single day." />
+          <SectionHeading align="center" eyebrow="TOOLKIT APPENDIX" tone="violet" title="The stack under the hood." sub="Rated by daily use — five stars means it's in my hands every single day." />
           <div className="skills-grid">
             {skillGroups.map((group, i) => {
               const Icon = skillIconComponents[i % skillIconComponents.length];
@@ -382,10 +419,7 @@ function App() {
                   whileHover={{ y: -6 }}
                   transition={{ duration: 0.25 }}
                 >
-                  <div className="skill-top">
-                    <div className={skillIconStyles[i % skillIconStyles.length]}><Icon size={22} /></div>
-                    <span className="skill-code">{group.code}</span>
-                  </div>
+                  <div className={skillIconStyles[i % skillIconStyles.length]}><Icon size={22} /></div>
                   <h3>{group.category}</h3>
                   <span className="stars" aria-label={`Rated ${group.rating} out of 5`}>
                     {'★'.repeat(group.rating)}{'☆'.repeat(5 - group.rating)}
@@ -401,7 +435,7 @@ function App() {
 
         {/* EXPERIENCE */}
         <section id="experience" className="section container" style={{ paddingTop: 0 }}>
-          <SectionHeading no="03" eyebrow="TRACK RECORD" title="3+ years across SEO, ads, sales & leadership." sub="Every role below fed the next — outreach, then pipeline ownership, then growth strategy." />
+          <SectionHeading eyebrow="TRACK RECORD" title="3+ years across SEO, ads, sales & leadership." sub="Every role below fed the next — outreach, then pipeline ownership, then growth strategy." />
           <div className="timeline">
             {experience.map((item, idx) => (
               <motion.article
@@ -415,7 +449,7 @@ function App() {
                 <div className="timeline-head">
                   <div>
                     <span className="company">{item.company}</span>
-                    <h3><span className="roman" aria-hidden="true">{ROMAN[idx]}</span>{item.role}</h3>
+                    <h3>{item.role}</h3>
                   </div>
                   <span className={`period ${idx === 0 ? 'live' : ''}`}>{item.period}</span>
                 </div>
@@ -433,11 +467,11 @@ function App() {
 
         {/* PROJECTS */}
         <section id="projects" className="section container" style={{ paddingTop: 0 }}>
-          <SectionHeading no="04" eyebrow="BUILD LOG · THE PLATES" tone="amber" title="Two plates, fully documented." sub="Each plate shows the full engagement — scope, deliverables, outcome. Ask me for the walkthrough." />
+          <SectionHeading eyebrow="BUILD LOG · THE PLATES" tone="amber" title="Two plates, fully documented." sub="Each plate shows the full engagement — scope, deliverables, outcome. Ask me for the walkthrough." />
           <div className="contents-list" aria-label="In this issue">
             {projects.map((project, i) => (
               <a key={project.title} href={`mailto:${contact.email}?subject=Case study: ${project.title}`}>
-                <span className="c-no">B.0{i + 1}</span>
+                <span className="c-no">◆</span>
                 {project.title}
                 <span className="c-sub">{project.status} →</span>
               </a>
@@ -454,8 +488,8 @@ function App() {
                 transition={{ duration: 0.5, delay: i * 0.08 }}
               >
                 <div className={`project-banner ${i % 2 ? 'project-banner--ink' : 'project-banner--ember'}`}>
-                  <span className="project-status">B.0{i + 1} · {project.status}</span>
-                  <div className="big">Plate {project.number}</div>
+                  <span className="project-status">{project.status}</span>
+                  <div className="big">{project.title.split(' ').slice(0, 2).join(' ')}</div>
                   <span className="plate-words">{project.title}</span>
                 </div>
                 <div className="project-body">
@@ -499,7 +533,7 @@ function App() {
 
         {/* SERVICES */}
         <section id="services" className="section container">
-          <SectionHeading no="05" align="center" eyebrow="SERVICES" tone="violet" title="Hire me for outcomes, not activities." sub="Every service ends in something you can measure — rankings, leads or cost-per-result." />
+          <SectionHeading align="center" eyebrow="SERVICES" tone="violet" title="Hire me for outcomes, not activities." sub="Every service ends in something you can measure — rankings, leads or cost-per-result." />
           <div className="services-grid">
             {services.map(({ title, description, icon }, i) => {
               const Icon = serviceIcons[icon] || Search;
@@ -515,7 +549,7 @@ function App() {
           <div className="band-dark" style={{ marginTop: '2.5rem' }}>
           <SectionHeading eyebrow="METHOD · HOW I WORK" title="A simple process. No black box." sub="You'll always know what's happening, why it matters, and what comes next." />
           <div className="process-grid">
-            {process.map(({ step, title, description }, i) => (
+            {process.map(({ title, description }, i) => (
               <motion.div
                 key={step}
                 className="process-step"
@@ -524,7 +558,6 @@ function App() {
                 viewport={{ once: true, margin: '-60px' }}
                 transition={{ duration: 0.5, delay: i * 0.07 }}
               >
-                <span className="process-step-num">{step}</span>
                 <h3>{title}</h3>
                 <p>{description}</p>
               </motion.div>
@@ -563,7 +596,6 @@ function App() {
         <section id="contact" className="section container" style={{ paddingTop: 0 }}>
           <div className="contact-card">
             <div>
-              <span className="chapter-no light" aria-hidden="true">06</span>
               <span className="eyebrow-pill">SIGNAL · BACK COVER</span>
               <h2>Let&apos;s build something good.</h2>
               <p className="contact-copy">
