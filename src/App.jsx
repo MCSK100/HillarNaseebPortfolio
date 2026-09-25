@@ -28,6 +28,24 @@ const toolStrip = ['SEMrush', 'Ahrefs', 'Moz Pro', 'GA4', 'Search Console', 'Goo
 
 const tickerItems = ['SEO AUDITS', 'META ADS', 'KEYWORD RESEARCH', 'GA4 ANALYTICS', 'LEAD GENERATION', 'LOCAL SEO', 'TECHNICAL FIXES', 'CONTENT THAT RANKS'];
 
+/* ambient hero particles — deterministic so every load looks composed */
+const PARTICLES = [
+  { glyph: '↑', left: '4%', size: 22, dur: 13, delay: -2, color: 'var(--accent)' },
+  { glyph: '#1', left: '11%', size: 15, dur: 17, delay: -9, color: 'var(--muted)' },
+  { glyph: '◆', left: '19%', size: 13, dur: 12, delay: -5, color: 'var(--amber)' },
+  { glyph: '↗', left: '27%', size: 20, dur: 15, delay: -11, color: 'var(--accent)' },
+  { glyph: '+38%', left: '35%', size: 14, dur: 18, delay: -4, color: 'var(--muted)' },
+  { glyph: '★', left: '43%', size: 16, dur: 11, delay: -7, color: 'var(--amber)' },
+  { glyph: '↑', left: '52%', size: 24, dur: 14, delay: -1, color: 'var(--accent)' },
+  { glyph: '◆', left: '60%', size: 12, dur: 16, delay: -10, color: 'var(--muted)' },
+  { glyph: '#3', left: '68%', size: 15, dur: 12, delay: -6, color: 'var(--muted)' },
+  { glyph: '↗', left: '75%', size: 21, dur: 15, delay: -3, color: 'var(--accent)' },
+  { glyph: '+', left: '82%', size: 20, dur: 10, delay: -8, color: 'var(--amber)' },
+  { glyph: '★', left: '88%', size: 14, dur: 17, delay: -12, color: 'var(--amber)' },
+  { glyph: '↑', left: '94%', size: 22, dur: 13, delay: -5, color: 'var(--accent)' },
+  { glyph: '%', left: '97%', size: 16, dur: 14, delay: -9, color: 'var(--muted)' },
+];
+
 function SectionHeading({ eyebrow, tone = '', title, sub, align = 'left' }) {
   return (
     <motion.div
@@ -238,6 +256,26 @@ function App() {
         <section id="home" className="hero container" ref={heroRef}>
           <motion.div className="orb orb--one" style={px({ y: orbY })} aria-hidden="true" />
           <motion.div className="orb orb--two" style={px({ y: orbY })} aria-hidden="true" />
+          <div className="hero-bg" aria-hidden="true">
+            <div className="blob blob--one" />
+            <div className="blob blob--two" />
+            <div className="blob blob--three" />
+            {PARTICLES.map((p, i) => (
+              <span
+                key={i}
+                className="particle"
+                style={{
+                  left: p.left,
+                  fontSize: p.size,
+                  color: p.color,
+                  animationDuration: `${p.dur}s`,
+                  animationDelay: `${p.delay}s`,
+                }}
+              >
+                {p.glyph}
+              </span>
+            ))}
+          </div>
           <div className="hero-grid">
             <motion.div initial={{ opacity: 0, y: 26 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, ease: 'easeOut' }}>
               <motion.div style={px({ y: copyY, opacity: copyOpacity })}>
