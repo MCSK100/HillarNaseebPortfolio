@@ -20,10 +20,10 @@ export const stats = [
 ];
 
 export const skillGroups = [
-  { category: 'SEO Tools', items: ['SEMrush', 'Ahrefs', 'Moz Pro', 'Ubersuggest', 'Screaming Frog'] },
-  { category: 'Google Tools', items: ['Google Analytics 4', 'Search Console', 'Google Ads', 'Tag Manager', 'Keyword Planner'] },
-  { category: 'Paid & Social Ads', items: ['Meta Ads Manager', 'Facebook Ads', 'Instagram Ads', 'Audience Targeting'] },
-  { category: 'Core SEO Skills', items: ['On-Page SEO', 'Off-Page SEO', 'Technical SEO', 'Local SEO', 'Link Building', 'Keyword Research'] },
+  { code: 'T.01', category: 'SEO Tools', rating: 5, items: ['SEMrush', 'Ahrefs', 'Moz Pro', 'Ubersuggest', 'Screaming Frog'] },
+  { code: 'T.02', category: 'Google Tools', rating: 5, items: ['Google Analytics 4', 'Search Console', 'Google Ads', 'Tag Manager', 'Keyword Planner'] },
+  { code: 'T.03', category: 'Paid & Social Ads', rating: 4, items: ['Meta Ads Manager', 'Facebook Ads', 'Instagram Ads', 'Audience Targeting'] },
+  { code: 'T.04', category: 'Core SEO Skills', rating: 5, items: ['On-Page SEO', 'Off-Page SEO', 'Technical SEO', 'Local SEO', 'Link Building', 'Keyword Research'] },
 ];
 
 export const experience = [

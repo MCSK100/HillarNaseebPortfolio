@@ -25,7 +25,12 @@ const skillIconComponents = [Search, BarChart3, Megaphone, Target];
 
 const toolStrip = ['SEMrush', 'Ahrefs', 'Moz Pro', 'GA4', 'Search Console', 'Google Ads', 'Meta Ads', 'Screaming Frog', 'WordPress', 'HubSpot', 'Tag Manager', 'Ubersuggest'];
 
-function SectionHeading({ eyebrow, tone = '', title, sub, align = 'left' }) {
+/* Tamil-numeral chapter markers — the issue's running order, in Hillar's own script. */
+const CHAPTER_NOS = { '#home': '௦', '#about': '௧', '#skills': '௨', '#experience': '௩', '#projects': '௪', '#contact': '௭' };
+
+const tickerItems = ['SEO AUDITS', 'META ADS', 'KEYWORD RESEARCH', 'GA4 ANALYTICS', 'LEAD GENERATION', 'LOCAL SEO', 'TECHNICAL FIXES', 'CONTENT THAT RANKS'];
+
+function SectionHeading({ eyebrow, tone = '', title, sub, align = 'left', no }) {
   return (
     <motion.div
       className={`section-heading ${align === 'center' ? 'section-heading--center' : ''}`}
@@ -34,6 +39,7 @@ function SectionHeading({ eyebrow, tone = '', title, sub, align = 'left' }) {
       viewport={{ once: true, margin: '-60px' }}
       transition={{ duration: 0.55, ease: 'easeOut' }}
     >
+      {no ? <span className="chapter-no" aria-hidden="true">{no}</span> : null}
       <span className={`eyebrow-pill ${tone}`}>{eyebrow}</span>
       <h2>{title}</h2>
       {sub ? <p className="sub">{sub}</p> : null}
@@ -137,7 +143,12 @@ function App() {
   return (
     <div className="app-shell">
       <motion.div className="progress-bar" style={{ scaleX: pageProgress }} aria-hidden="true" />
-      <div className="top-strip">Available for SEO & Meta Ads roles and freelance growth projects — Coimbatore / Remote</div>
+      <div className="grain" aria-hidden="true" />
+      <div className="top-strip masthead">
+        <span className="ms-side">VOL. 01 · 2026</span>
+        <span className="masthead-title">THE GROWTH ISSUE — available for roles & freelance</span>
+        <span className="ms-side">CBE · 11.02° N</span>
+      </div>
 
       <header className={`site-header ${scrolled ? 'site-header--scrolled' : ''} ${headerHidden ? 'site-header--hidden' : ''}`}>
         <nav className="nav container" aria-label="Main navigation">
@@ -153,6 +164,7 @@ function App() {
                 className={activeSection === item.href.replace('#', '') ? 'active' : ''}
                 onClick={() => setMenuOpen(false)}
               >
+                <span className="nav-no" aria-hidden="true">{CHAPTER_NOS[item.href]}</span>
                 {item.name}
               </a>
             ))}
@@ -174,20 +186,25 @@ function App() {
           <div className="hero-grid">
             <motion.div initial={{ opacity: 0, y: 26 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, ease: 'easeOut' }}>
               <motion.div style={px({ y: copyY, opacity: copyOpacity })}>
-              <span className="badge"><span className="badge-dot" /> DIGITAL MARKETING & SEO ANALYST</span>
+              <span className="badge"><span className="badge-dot" /> COVER STORY · SEO ANALYST, COIMBATORE</span>
               <h1 className="hero-title">
-                I turn searches into traffic, and <span className="gradient-text">traffic into revenue.</span>
+                I turn searches into traffic, and <em className="serif-accent">traffic into revenue.</em>
               </h1>
-              <p className="hero-text">
+              <p className="hero-text lede">
                 I&apos;m <strong>Hillar Naseeb N</strong>, SEO Analyst at TN Industrial Connect — I combine
                 technical, on-page & local SEO with high-intent Meta Ads so businesses don&apos;t just get
                 found, they get <strong>enquiries, admissions and sales</strong>. 3+ years, 15+ tools, one
                 obsession: measurable growth.
               </p>
               <div className="hero-actions">
-                <MagneticButton href="#projects">View SEO Work</MagneticButton>
+                <MagneticButton href="#projects">Read the Plates</MagneticButton>
                 <MagneticButton href="#contact" variant="secondary">Hire Me</MagneticButton>
                 <a href="/resume.pdf" className="resume-link" download>Download Resume</a>
+              </div>
+              <div className="cover-meta" aria-label="Issue credits">
+                <span>WORDS · HILLAR NASEEB</span>
+                <span>FIELD · SEO + META ADS</span>
+                <span>BASE · COIMBATORE</span>
               </div>
               <div className="hero-proof">
                 {stats.map((s) => (
@@ -233,6 +250,13 @@ function App() {
               </motion.div>
             </motion.div>
           </div>
+          <div className="ticker" aria-hidden="true">
+            <div className="ticker-track">
+              {[...tickerItems, ...tickerItems].map((t, i) => (
+                <span key={i}>{t}<i>✦</i></span>
+              ))}
+            </div>
+          </div>
         </section>
 
         {/* TOOLS */}
@@ -248,7 +272,7 @@ function App() {
 
         {/* ABOUT */}
         <section id="about" className="section container">
-          <SectionHeading eyebrow="ABOUT ME" title="A marketer who thinks in pipelines, not just clicks." sub="Most marketers hand you traffic reports. I hand you leads — because I've carried a sales target too." />
+          <SectionHeading no="௧" eyebrow="CHAPTER ONE · ABOUT ME" title="A marketer who thinks in pipelines, not just clicks." sub="Most marketers hand you traffic reports. I hand you leads — because I've carried a sales target too." />
           <div className="about-grid">
             <aside className="profile-card">
               <img className="profile-photo" src="/banner-img.jpeg" alt="Hillar Naseeb N" loading="lazy" decoding="async" />
@@ -276,9 +300,11 @@ function App() {
                 Before that, at <strong>Inmakes Infotech (Kochi)</strong>, I climbed from Business Development
                 Executive to <strong>Assistant Team Manager</strong> — promoting digital marketing programs and
                 webinars, running end-to-end lead generation, and coaching sales executives to hit targets
-                month after month. That sales-floor experience is my edge: I optimize for
-                <strong> revenue, not rankings alone</strong>.
+                month after month.
               </p>
+              <blockquote className="pull-quote">
+                “I optimize for <em>revenue</em>, not rankings alone.”
+              </blockquote>
               <div className="highlights-grid">
                 {keyHighlights.map((h) => (
                   <div key={h} className="highlight"><CheckCircle size={17} /> {h}</div>
@@ -286,11 +312,24 @@ function App() {
               </div>
             </div>
           </div>
+          <div className="numbers-band" aria-label="By the numbers">
+            {[
+              { v: '3+', l: 'Years in the craft' },
+              { v: '15+', l: 'Tools & platforms' },
+              { v: '04', l: 'Certifications held' },
+              { v: '09', l: 'Core specialties' },
+            ].map(({ v, l }) => (
+              <div key={l} className="number-cell">
+                <strong>{v}</strong>
+                <span>{l}</span>
+              </div>
+            ))}
+          </div>
         </section>
 
         {/* SKILLS */}
         <section id="skills" className="section container" style={{ paddingTop: 0 }}>
-          <SectionHeading align="center" eyebrow="TOOLKIT" tone="violet" title="Every tool needed to rank, track and scale." sub="From crawl audits to creative testing — one stack, full funnel." />
+          <SectionHeading no="௨" align="center" eyebrow="CHAPTER TWO · TOOLKIT" tone="violet" title="The stack under the hood." sub="Rated by daily use — five stars means it's in my hands every single day." />
           <div className="skills-grid">
             {skillGroups.map((group, i) => {
               const Icon = skillIconComponents[i % skillIconComponents.length];
@@ -301,9 +340,14 @@ function App() {
                   whileHover={{ y: -6 }}
                   transition={{ duration: 0.25 }}
                 >
-                  <div className={skillIconStyles[i % skillIconStyles.length]}><Icon size={22} /></div>
+                  <div className="skill-top">
+                    <div className={skillIconStyles[i % skillIconStyles.length]}><Icon size={22} /></div>
+                    <span className="skill-code">{group.code}</span>
+                  </div>
                   <h3>{group.category}</h3>
-                  <p>{group.items.length} tools & skills</p>
+                  <span className="stars" aria-label={`Rated ${group.rating} out of 5`}>
+                    {'★'.repeat(group.rating)}{'☆'.repeat(5 - group.rating)}
+                  </span>
                   <div className="tag-cloud">
                     {group.items.map((item) => <span key={item}>{item}</span>)}
                   </div>
@@ -315,7 +359,7 @@ function App() {
 
         {/* EXPERIENCE */}
         <section id="experience" className="section container" style={{ paddingTop: 0 }}>
-          <SectionHeading eyebrow="EXPERIENCE" title="3+ years across SEO, ads, sales & leadership." />
+          <SectionHeading no="௩" eyebrow="CHAPTER THREE · TRACK RECORD" title="3+ years across SEO, ads, sales & leadership." sub="Every role below fed the next — outreach, then pipeline ownership, then growth strategy." />
           <div className="timeline">
             {experience.map((item, idx) => (
               <motion.article
@@ -347,7 +391,7 @@ function App() {
 
         {/* PROJECTS */}
         <section id="projects" className="section container" style={{ paddingTop: 0 }}>
-          <SectionHeading eyebrow="SELECTED WORK" tone="amber" title="SEO projects, documented end to end." sub="Here's exactly what each engagement covered — ask me for the full walkthrough." />
+          <SectionHeading no="௪" eyebrow="CHAPTER FOUR · THE PLATES" tone="amber" title="Two plates, fully documented." sub="Each plate shows the full engagement — scope, deliverables, outcome. Ask me for the walkthrough." />
           <div className="project-grid">
             {projects.map((project, i) => (
               <motion.article
@@ -360,7 +404,8 @@ function App() {
               >
                 <div className={`project-banner ${i % 2 ? 'project-banner--violet' : 'project-banner--emerald'}`}>
                   <span className="project-status">{project.status}</span>
-                  <div className="big">{project.number} — {project.title.split(' ').slice(0, 2).join(' ')}</div>
+                  <div className="big">Plate {project.number}</div>
+                  <span className="plate-words">{project.title}</span>
                 </div>
                 <div className="project-body">
                   <h3>{project.title}</h3>
@@ -416,7 +461,7 @@ function App() {
         {/* PROCESS */}
         <section className="section container" style={{ paddingTop: 0 }}>
           <div className="band-dark">
-          <SectionHeading eyebrow="HOW I WORK" title="A simple process. No black box." sub="You'll always know what's happening, why it matters, and what comes next." />
+          <SectionHeading no="௫" eyebrow="CHAPTER FIVE · METHOD" title="A simple process. No black box." sub="You'll always know what's happening, why it matters, and what comes next." />
           <div className="process-grid">
             {process.map(({ step, title, description }, i) => (
               <motion.div
@@ -438,7 +483,7 @@ function App() {
 
         {/* CREDENTIALS */}
         <section className="section container" style={{ paddingTop: 0 }}>
-          <SectionHeading eyebrow="CREDENTIALS" tone="amber" title="Certified skills, solid foundation." sub="Google and HubSpot certified — plus the maths degree that makes analytics click." />
+          <SectionHeading no="௬" eyebrow="CHAPTER SIX · APPENDIX" tone="amber" title="Certified skills, solid foundation." sub="Google and HubSpot certified — plus the maths degree that makes analytics click." />
           <div className="cred-grid">
             {certifications.map(({ title, issuer }) => (
               <div key={title} className="cred-card">
@@ -466,7 +511,8 @@ function App() {
         <section id="contact" className="section container" style={{ paddingTop: 0 }}>
           <div className="contact-card">
             <div>
-              <span className="eyebrow-pill">LET&apos;S WORK TOGETHER</span>
+              <span className="chapter-no light" aria-hidden="true">௭</span>
+              <span className="eyebrow-pill">BACK COVER · LET&apos;S WORK TOGETHER</span>
               <h2>Need more traffic? Let&apos;s grow it.</h2>
               <p className="contact-copy">
                 Hiring for a <strong>Digital Marketing & SEO Analyst</strong> role, or need a freelancer for
@@ -507,7 +553,8 @@ function App() {
           </div>
           <div className="copyright">
             <span className="copyright-dot" />
-            <span>© 2026 {contact.name} — Built for growth.</span>
+            <span>© 2026 {contact.name} — The Growth Issue, Vol. 01.</span>
+            <span className="colophon">Set in Plus Jakarta Sans & Fraunces · Printed on the web · CBE 11.02° N</span>
           </div>
         </div>
       </footer>
