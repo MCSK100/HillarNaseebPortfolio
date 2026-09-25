@@ -259,7 +259,7 @@ img { max-width: 100%; display: block; }
 }
 
 /* ---------- hero ---------- */
-.hero { padding: 60px 0 72px; position: relative; }
+.hero { padding: 60px 0 72px; position: relative; overflow-x: hidden; overflow-x: clip; }
 .hero-grid { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 48px; align-items: center; position: relative; z-index: 1; }
 .badge {
   display: inline-flex; align-items: center; gap: 0.5rem;
