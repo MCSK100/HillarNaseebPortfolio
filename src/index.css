@@ -423,7 +423,7 @@ a.chip:hover { transform: translateY(-2px); border-color: var(--accent); box-sha
 .profile-card h3 { margin: 1rem 0 0.2rem; font-family: var(--serif); font-size: 1.5rem; font-weight: 600; }
 .profile-role { color: var(--accent-deep); font-weight: 700; font-size: 0.85rem; }
 .profile-rows { margin-top: 0.6rem; display: grid; gap: 0.55rem; font-size: 0.86rem; }
-.profile-rows div { display: flex; align-items: flex-start; gap: 0.6rem; color: var(--ink); }
+.profile-rows div { display: flex; align-items: flex-start; gap: 0.6rem; color: var(--ink); overflow-wrap: anywhere; min-width: 0; }
 .profile-rows svg { color: var(--accent); flex-shrink: 0; margin-top: 2px; }
 .profile-rows small { display: block; font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.1em; color: var(--muted); }
 .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 1.2rem; padding-top: 1.2rem; border-top: 1px solid var(--line); }
@@ -677,7 +677,7 @@ a.chip:hover { transform: translateY(-2px); border-color: var(--accent); box-sha
 .footer-inner { display: flex; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap; padding: 3rem 0 1.5rem; align-items: flex-start; }
 .footer-brand { display: flex; align-items: center; gap: 0.8rem; font-weight: 800; }
 .footer-role { font-size: 0.82rem; opacity: 0.65; margin-top: 0.6rem; display: block; max-width: 340px; }
-.footer-links { display: flex; gap: 1.2rem; font-family: var(--mono); font-size: 0.78rem; font-weight: 500; }
+.footer-links { display: flex; flex-wrap: wrap; gap: 0.8rem 1.2rem; font-family: var(--mono); font-size: 0.78rem; font-weight: 500; }
 .footer-links a:hover { color: var(--accent); }
 .back-top { display: inline-flex; align-items: center; gap: 0.4rem; font-family: var(--mono); font-size: 0.74rem; opacity: 0.8; }
 .back-top:hover { opacity: 1; color: var(--accent); }
@@ -723,7 +723,8 @@ a.chip:hover { transform: translateY(-2px); border-color: var(--accent); box-sha
   .particle:nth-child(n+9) { display: none; }
   .hero-line { height: 130px; opacity: 0.4; }
   .numbers-band { grid-template-columns: repeat(2, 1fr); gap: 20px 12px; }
-  .ticker { margin-top: 2.2rem; }
+  .ticker { margin-top: 2.2rem; transform: none; }
+  .tools-strip { margin-top: 1.5rem; }
   .cover-meta { gap: 0.4rem 1rem; }
   .colophon { margin-left: 0; text-align: left; }
   .photo-frame { outline-width: 4px; }
